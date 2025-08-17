@@ -1,0 +1,464 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Udhav's List — Aesthetic Todo</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#0b0f14">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="apple-touch-icon" href="icons/icon-180.png">
+  <link rel="icon" href="icons/icon-192.png">
+  <style>
+    :root {
+      --bg: #0b0f14;
+      --bg2: #0f141b;
+      --card: #131a22;
+      --card2: #111821;
+      --text: #e6ebf3;
+      --muted: #9fb0c6;
+      --accent: #a78bfa;
+      --accent-2: #7c3aed;
+      --ring: rgba(167,139,250,.5);
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --radius: 16px;
+      --wp-image: none;
+      --wp-size: cover;
+      --wp-blur: 0px;
+      --wp-dim: 0.35;
+    }
+    body.theme-minimal { --bg:#f6f7fb; --bg2:#ffffff; --card:#ffffff; --card2:#f1f4fa; --text:#0f1320; --muted:#667190; --accent:#3b82f6; --accent-2:#1d4ed8; --ring:rgba(59,130,246,.5); --shadow:0 10px 30px rgba(21,31,56,.12); }
+    body.theme-midnight { --bg:#0b0f14; --bg2:#0f141b; --card:#131a22; --card2:#111821; --text:#e6ebf3; --muted:#9fb0c6; --accent:#a78bfa; --accent-2:#7c3aed; --ring:rgba(167,139,250,.5); --shadow:0 10px 30px rgba(0,0,0,.35); }
+    body.theme-emerald { --bg:#081210; --bg2:#0c1916; --card:#0f1f1b; --card2:#0c1a16; --text:#e9fbf6; --muted:#a3d8cb; --accent:#34d399; --accent-2:#059669; --ring:rgba(52,211,153,.5); --shadow:0 10px 30px rgba(0,0,0,.3); }
+    body.theme-rose { --bg:#1a1214; --bg2:#201417; --card:#25171b; --card2:#221419; --text:#ffeaf0; --muted:#f5adc3; --accent:#fb7185; --accent-2:#e11d48; --ring:rgba(251,113,133,.5); --shadow:0 10px 30px rgba(0,0,0,.32); }
+    body.theme-ocean { --bg:#0b1018; --bg2:#0f1520; --card:#0f1b2a; --card2:#0c1723; --text:#e8f4ff; --muted:#a2c3e6; --accent:#60a5fa; --accent-2:#1e40af; --ring:rgba(96,165,250,.5); --shadow:0 10px 30px rgba(0,0,0,.35); }
+    body.theme-solar { --bg:#11100b; --bg2:#1a1911; --card:#1f1e12; --card2:#1b1a10; --text:#fff7db; --muted:#d7cfa7; --accent:#fbbf24; --accent-2:#d97706; --ring:rgba(251,191,36,.5); --shadow:0 10px 30px rgba(0,0,0,.3); }
+    body.theme-sand  { --bg:#0f1110; --bg2:#151816; --card:#181b19; --card2:#141715; --text:#f2efe7; --muted:#c9c2b4; --accent:#eab308; --accent-2:#b45309; --ring:rgba(234,179,8,.5); --shadow:0 10px 30px rgba(0,0,0,.28); }
+    body.theme-grape { --bg:#110b14; --bg2:#180f1d; --card:#1d1022; --card2:#170d1b; --text:#f6e8ff; --muted:#d8baff; --accent:#c084fc; --accent-2:#9333ea; --ring:rgba(192,132,252,.5); --shadow:0 10px 30px rgba(0,0,0,.35); }
+    body.theme-sky   { --bg:#0b1116; --bg2:#0e151d; --card:#101b25; --card2:#0d1620; --text:#e8f7ff; --muted:#a6d1ea; --accent:#22d3ee; --accent-2:#0891b2; --ring:rgba(34,211,238,.5); --shadow:0 10px 30px rgba(0,0,0,.34); }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: ui-rounded, ui-sans-serif, system-ui, -apple-system, "SF Pro Rounded", "Segoe UI", Roboto, Inter, Helvetica, Arial;
+      background: radial-gradient(1200px 800px at 80% -10%, var(--bg2), transparent), radial-gradient(1200px 800px at -10% 120%, var(--bg2), transparent), var(--bg);
+      color: var(--text);
+    }
+    body::before, body::after { content:""; position: fixed; inset: 0; z-index: -2; }
+    body::before { background-image: var(--wp-image); background-size: var(--wp-size); background-position: center; background-repeat: no-repeat; filter: blur(var(--wp-blur)); transform: scale(1.05); }
+    body::after { z-index: -1; background: linear-gradient(180deg, rgba(0,0,0, var(--wp-dim)), rgba(0,0,0, calc(var(--wp-dim) + 0.05))); }
+
+    .app { max-width: 1100px; margin: 0 auto; padding: 16px; }
+    header { position: sticky; top: 0; z-index: 5; display:flex; align-items:center; gap:12px; justify-content:space-between; padding:10px 0; backdrop-filter: saturate(1.2) blur(6px); }
+    .title { display:flex; align-items:center; gap:10px; font-weight:800; letter-spacing:.4px; }
+    .title .logo { width:36px; height:36px; border-radius:12px; display:grid; place-items:center; background: linear-gradient(135deg, var(--accent), var(--accent-2)); box-shadow: var(--shadow); }
+    .title h1 { font-size: 22px; margin: 0; }
+    .toolbar { display:flex; align-items:center; gap:10px; flex-wrap: wrap; }
+    .btn { appearance:none; border:none; background:var(--card2); color:var(--text); padding:10px 14px; border-radius: 12px; font-weight: 700; box-shadow: var(--shadow); cursor:pointer; outline: 2px solid transparent; outline-offset:2px; }
+    .btn:hover { filter: brightness(1.06); }
+    .btn:active { transform: translateY(1px); }
+    .btn.primary { background: linear-gradient(135deg, var(--accent), var(--accent-2)); }
+    .btn.ghost { background: transparent; border:1px solid rgba(255,255,255,.08); }
+
+    .searchbar { display:flex; gap:10px; margin-top:8px; }
+    .searchbar input { flex:1; padding:12px 14px; border-radius: 14px; background: var(--card2); color: var(--text); border:1px solid rgba(255,255,255,.06); outline:none; }
+    .searchbar input:focus { box-shadow: 0 0 0 3px var(--ring); }
+    .filters { display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; }
+    .chip { padding:8px 12px; border-radius:999px; background:var(--card2); border:1px solid rgba(255,255,255,.06); color:var(--text); font-weight:600; font-size:13px; cursor:pointer; }
+    .chip.active { background:linear-gradient(135deg, var(--accent), var(--accent-2)); border-color:transparent; }
+
+    .layout { display:grid; grid-template-columns: 260px 1fr; gap:16px; margin-top:16px; }
+    @media (max-width: 900px){ .layout { grid-template-columns: 1fr; } .toolbar { gap:8px; } }
+    @media (max-width: 520px){ .addbar { flex-direction: column; } .btn { padding:12px 14px; } .title h1 { font-size: 20px; } }
+
+    .panel { background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02)); border:1px solid rgba(255,255,255,.08); border-radius: var(--radius); box-shadow: var(--shadow); }
+    .panel .header { padding:14px 14px 0; font-weight:800; letter-spacing:.3px; opacity:.95; }
+    .panel .body { padding:14px; }
+
+    .projects { display:flex; flex-direction:column; gap:8px; }
+    .project { display:flex; align-items:center; gap:10px; padding:10px; border-radius:12px; background:var(--card); cursor:pointer; border:1px solid rgba(255,255,255,.06); }
+    .project .dot { width:10px; height:10px; border-radius:50%; }
+    .project.active { outline: 3px solid var(--ring); }
+    .project .name { font-weight:700; }
+    .project small { color:var(--muted); }
+
+    .addbar { display:flex; gap:10px; margin-bottom:10px; }
+    .addbar input[type=text] { flex:1; padding:14px 14px; border-radius: 14px; background: var(--card2); color: var(--text); border:1px solid rgba(255,255,255,.06); outline:none; font-weight:700; }
+    .addbar input[type=text]::placeholder { color: var(--muted); font-weight:500; }
+    .addbar input[type=text]:focus { box-shadow: 0 0 0 3px var(--ring); }
+    .add-adv { display:grid; grid-template-columns: repeat(5, minmax(0,1fr)); gap:8px; margin-bottom:14px; }
+    .add-adv .field, .task .field { background: var(--card2); padding:10px; border-radius:12px; border:1px solid rgba(255,255,255,.06); }
+    .add-adv label, .task .field label { display:block; font-size:11px; opacity:.7; margin-bottom:6px; }
+    .add-adv input, .add-adv select, .task .field input, .task .field select, .task .field textarea { width:100%; background:transparent; border:none; color:var(--text); outline:none; font-size:13px; }
+
+    .tasks { display:flex; flex-direction:column; gap:10px; }
+    .task { background: var(--card); border:1px solid rgba(255,255,255,.06); border-radius: 16px; padding:12px; box-shadow: var(--shadow); }
+    .task-header { display:flex; align-items:center; gap:10px; }
+    .task .checkbox { width:22px; height:22px; border-radius:6px; border:2px solid var(--muted); display:grid; place-items:center; cursor:pointer; }
+    .task .checkbox.done { border-color: transparent; background: linear-gradient(135deg, var(--accent), var(--accent-2)); }
+    .task .title { font-weight:800; letter-spacing:.2px; }
+    .task .meta { margin-left:auto; display:flex; align-items:center; gap:8px; }
+    .meta .iconbtn { display:grid; place-items:center; width:36px; height:36px; border-radius:10px; background:var(--card2); border:1px solid rgba(255,255,255,.06); cursor:pointer; }
+    .pill { padding:6px 10px; border-radius:999px; background:var(--card2); border:1px solid rgba(255,255,255,.06); font-size:12px; font-weight:700; color:var(--muted); }
+    .pill.crit { background: linear-gradient(135deg, #ef4444, #b91c1c); color:#fff; border:none; }
+    .pill.high { background: linear-gradient(135deg, #fb923c, #ea580c); color:#111; }
+    .pill.med { background: linear-gradient(135deg, #facc15, #eab308); color:#111; }
+    .pill.low { background: linear-gradient(135deg, #34d399, #059669); color:#fff; }
+
+    .task-details { margin-top:10px; display:none; grid-template-columns: 1fr; gap:10px; }
+    .task.open .task-details { display:grid; }
+    .tags { display:flex; gap:6px; flex-wrap:wrap; }
+    .tag { padding:5px 10px; font-size:11px; border-radius:999px; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.1); color:var(--text); }
+
+    .footerbar { display:flex; align-items:center; justify-content:space-between; margin-top:12px; color:var(--muted); font-size:12px; }
+
+    .task.dragging { opacity:.6; outline: 3px dashed var(--ring); }
+
+    .toast { position: fixed; left: 50%; transform: translateX(-50%); bottom: 24px; background: var(--card); border:1px solid rgba(255,255,255,.08); padding:10px 14px; border-radius:12px; box-shadow: var(--shadow); font-weight:700; z-index: 50; display:flex; gap:12px; align-items:center; }
+    .toast .undo { padding:6px 10px; border-radius:10px; background:linear-gradient(135deg, var(--accent), var(--accent-2)); border:none; color:#fff; font-weight:800; cursor:pointer; }
+
+    .modal { position: fixed; inset:0; display:flex; align-items:center; justify-content:center; background: rgba(0,0,0,.4); z-index: 40; }
+    .sheet { width:min(680px, 92vw); background: var(--card); border:1px solid rgba(255,255,255,.1); border-radius: 16px; box-shadow: var(--shadow); overflow:hidden; }
+    .sheet .head { display:flex; align-items:center; justify-content:space-between; padding:14px; background: var(--card2); }
+    .sheet .content { padding:14px; display:grid; gap:12px; }
+    .row { display:grid; grid-template-columns: 1fr 1fr; gap:10px; }
+    @media (max-width: 560px){ .row { grid-template-columns: 1fr; } }
+    .field { background: var(--card2); padding:10px; border-radius:12px; border:1px solid rgba(255,255,255,.06); }
+    .field label { display:block; font-size:11px; opacity:.7; margin-bottom:6px; }
+    .range { width:100%; }
+  </style>
+</head>
+<body class="theme-midnight">
+  <div class="app" id="app">
+    <header>
+      <div class="title">
+        <div class="logo">✓</div>
+        <h1>Udhav's List</h1>
+        <span style="opacity:.6;font-weight:700;">— aesthetic todos</span>
+      </div>
+      <div class="toolbar">
+        <select id="themeSelect" class="btn">
+          <option value="theme-midnight">Midnight</option>
+          <option value="theme-minimal">Minimal</option>
+          <option value="theme-emerald">Emerald</option>
+          <option value="theme-rose">Rose</option>
+          <option value="theme-ocean">Ocean</option>
+          <option value="theme-solar">Solar</option>
+          <option value="theme-sand">Sand</option>
+          <option value="theme-grape">Grape</option>
+          <option value="theme-sky">Sky</option>
+        </select>
+        <button id="wallpaperBtn" class="btn">Wallpaper</button>
+        <button id="exportBtn" class="btn ghost">Export</button>
+        <label class="btn ghost" for="importFile">Import</label><input type="file" id="importFile" accept="application/json" style="display:none"/>
+        <button id="clearBtn" class="btn">Clear</button>
+      </div>
+    </header>
+
+    <div class="searchbar">
+      <input id="searchInput" placeholder="Search tasks, tags, notes… ( / to focus )" />
+      <button id="newProjectBtn" class="btn">New Project</button>
+    </div>
+
+    <div class="filters">
+      <div class="chip" data-filter="inbox">Inbox</div>
+      <div class="chip" data-filter="today">Today</div>
+      <div class="chip" data-filter="upcoming">Upcoming</div>
+      <div class="chip" data-filter="completed">Completed</div>
+      <div class="chip active" data-filter="all">All</div>
+      <div class="chip" id="selectModeToggle">Select</div>
+      <div class="chip" id="compactToggle">Compact</div>
+      <div class="chip" id="sortSelect" data-sort="smart">Sort: Smart</div>
+    </div>
+
+    <div class="layout">
+      <div class="panel">
+        <div class="header">Projects</div>
+        <div class="body projects" id="projects"></div>
+      </div>
+
+      <div class="panel">
+        <div class="body">
+          <div class="addbar">
+            <input id="quickTitle" type="text" placeholder="Quick add a task… ( N )" />
+            <button id="quickAddBtn" class="btn primary">Add</button>
+          </div>
+          <div class="add-adv" id="advRow" style="display:grid;">
+            <div class="field">
+              <label>Due</label>
+              <input id="addDue" type="date"/>
+            </div>
+            <div class="field">
+              <label>Priority</label>
+              <select id="addPriority">
+                <option value="med">Medium</option>
+                <option value="low">Low</option>
+                <option value="high">High</option>
+                <option value="crit">Critical</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Project</label>
+              <select id="addProject"></select>
+            </div>
+            <div class="field">
+              <label>Tags</label>
+              <input id="addTags" placeholder="comma,separated"/>
+            </div>
+            <div class="field">
+              <label>Repeat</label>
+              <select id="addRepeat">
+                <option value="none">None</option>
+                <option value="daily">Daily</option>
+                <option value="weekly">Weekly</option>
+                <option value="monthly">Monthly</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="tasks" id="tasks"></div>
+
+          <div class="footerbar">
+            <div id="countInfo"></div>
+            <div id="bulkBar" style="display:none;">
+              <button class="btn" id="bulkComplete">Complete</button>
+              <button class="btn ghost" id="bulkDelete">Delete</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="wpModal" style="display:none;">
+    <div class="sheet">
+      <div class="head">
+        <strong>Wallpaper</strong>
+        <button class="btn ghost" id="wpClose">Close</button>
+      </div>
+      <div class="content">
+        <div class="row">
+          <div class="field">
+            <label>Upload Image</label>
+            <input type="file" id="wpFile" accept="image/*" />
+          </div>
+          <div class="field">
+            <label>From URL</label>
+            <input type="url" id="wpUrl" placeholder="https://example.com/wallpaper.jpg" />
+          </div>
+        </div>
+        <div class="row">
+          <div class="field">
+            <label>Blur</label>
+            <input type="range" min="0" max="16" step="1" id="wpBlur" class="range" />
+          </div>
+          <div class="field">
+            <label>Dim</label>
+            <input type="range" min="0" max="0.7" step="0.05" id="wpDim" class="range" />
+          </div>
+        </div>
+        <div class="row">
+          <div class="field">
+            <label>Fit</label>
+            <select id="wpFit">
+              <option value="cover">Cover (recommended)</option>
+              <option value="contain">Contain</option>
+            </select>
+          </div>
+          <div class="field" style="display:flex; align-items:end; gap:8px;">
+            <button class="btn" id="wpApply">Apply</button>
+            <button class="btn ghost" id="wpRemove">Remove</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" style="display:none;"><span id="toastMsg"></span><button class="undo" id="undoBtn" style="display:none;">Undo</button></div>
+
+  <script>
+  'use strict';
+
+  const DB_KEY = 'ultralist.v1';
+  const $ = (s, root=document) => root.querySelector(s);
+  const $$ = (s, root=document) => Array.from(root.querySelectorAll(s));
+
+  const state = load() || initState();
+  let filter = 'all';
+  let sortMode = 'smart';
+  let selectMode = false;
+  let compact = state.settings.compact || false;
+  applyTheme(state.settings.theme || 'theme-midnight');
+  applyWallpaper(state.settings.wallpaper || null);
+
+  const projectsEl = $('#projects');
+  const tasksEl = $('#tasks');
+  const addProjectSel = $('#addProject');
+  const searchInput = $('#searchInput');
+  const themeSelect = $('#themeSelect');
+  themeSelect.value = state.settings.theme;
+  if (compact) document.body.classList.add('compact');
+
+  themeSelect.addEventListener('change', e => { applyTheme(e.target.value); pushToast('Theme updated'); });
+  $('#exportBtn').addEventListener('click', exportData);
+  $('#importFile').addEventListener('change', importData);
+  $('#clearBtn').addEventListener('click', () => { if (confirm('Clear all data? This cannot be undone.')) { localStorage.removeItem(DB_KEY); location.reload(); } });
+  $('#newProjectBtn').addEventListener('click', newProjectPrompt);
+
+  const wpModal = $('#wpModal');
+  $('#wallpaperBtn').addEventListener('click', ()=> { syncWpControls(); wpModal.style.display='flex'; });
+  $('#wpClose').addEventListener('click', ()=> { wpModal.style.display='none'; });
+  $('#wpApply').addEventListener('click', ()=> { saveWallpaperFromControls(); wpModal.style.display='none'; pushToast('Wallpaper updated'); });
+  $('#wpRemove').addEventListener('click', ()=> { state.settings.wallpaper = null; save(); applyWallpaper(null); syncWpControls(); pushToast('Wallpaper removed'); });
+  $('#wpFile').addEventListener('change', handleWpFile);
+
+  function handleWpFile(e){
+    const file = e.target.files && e.target.files[0];
+    if(!file) return;
+    const reader = new FileReader();
+    reader.onload = ()=>{ $('#wpUrl').value = reader.result; };
+    reader.readAsDataURL(file);
+  }
+
+  function syncWpControls(){
+    const wp = state.settings.wallpaper || { url:'', blur:8, dim:0.35, fit:'cover' };
+    $('#wpUrl').value = wp.url || '';
+    $('#wpBlur').value = wp.blur ?? 8;
+    $('#wpDim').value = wp.dim ?? 0.35;
+    $('#wpFit').value = wp.fit || 'cover';
+  }
+
+  function saveWallpaperFromControls(){
+    const wp = {
+      url: $('#wpUrl').value.trim(),
+      blur: +$('#wpBlur').value,
+      dim: +$('#wpDim').value,
+      fit: $('#wpFit').value
+    };
+    state.settings.wallpaper = wp; save(); applyWallpaper(wp);
+  }
+
+  function applyWallpaper(wp){
+    if(!wp || !wp.url){
+      document.documentElement.style.setProperty('--wp-image', 'none');
+      document.documentElement.style.setProperty('--wp-blur', '0px');
+      document.documentElement.style.setProperty('--wp-dim', '0.0');
+      return;
+    }
+    document.documentElement.style.setProperty('--wp-image', `url('${wp.url}')`);
+    document.documentElement.style.setProperty('--wp-size', wp.fit || 'cover');
+    document.documentElement.style.setProperty('--wp-blur', (wp.blur||0)+'px');
+    document.documentElement.style.setProperty('--wp-dim', String(wp.dim ?? 0.35));
+  }
+
+  $$('.filters .chip[data-filter]').forEach(c => c.addEventListener('click', () => {
+    $$('.filters .chip[data-filter]').forEach(x=>x.classList.remove('active'));
+    c.classList.add('active');
+    filter = c.dataset.filter;
+    render();
+  }));
+  $('#selectModeToggle').addEventListener('click', (e) => { selectMode = !selectMode; e.currentTarget.classList.toggle('active', selectMode); render(); });
+  $('#compactToggle').addEventListener('click', (e) => { compact = !compact; state.settings.compact = compact; save(); e.currentTarget.classList.toggle('active', compact); document.body.style.setProperty('--radius', compact ? '10px' : '16px'); render(); });
+  $('#sortSelect').addEventListener('click', (e) => { const modes = ['smart','due','priority','created']; const idx = modes.indexOf(sortMode); sortMode = modes[(idx+1)%modes.length]; e.currentTarget.dataset.sort = sortMode; e.currentTarget.textContent = 'Sort: ' + (sortMode[0].toUpperCase()+sortMode.slice(1)); render(); });
+
+  searchInput.addEventListener('input', render);
+  window.addEventListener('keydown', (e)=>{ if (e.key === '/') { e.preventDefault(); searchInput.focus(); } if (e.key.toLowerCase() === 'n') { $('#quickTitle').focus(); } });
+
+  $('#quickAddBtn').addEventListener('click', quickAdd);
+  $('#quickTitle').addEventListener('keydown', e => { if (e.key === 'Enter') quickAdd(); });
+
+  function refreshProjectSelect() {
+    addProjectSel.innerHTML = '';
+    state.projects.forEach(p => { const o = document.createElement('option'); o.value = p.id; o.textContent = p.name; addProjectSel.appendChild(o); });
+    addProjectSel.value = state.projects[0].id;
+  }
+
+  refreshProjectSelect();
+  renderProjects();
+  render();
+
+  function initState(){
+    const inbox = mkProject('Inbox', '#9fb0c6');
+    return {
+      settings: { theme: 'theme-midnight', compact: false, wallpaper: null },
+      projects: [inbox, mkProject('Work', '#34d399'), mkProject('Personal', '#60a5fa')],
+      tasks: [
+        mkTask('Welcome to Udhav\\'s List ✨', {projectId: inbox.id, priority:'high', tags:['intro','demo']}),
+        mkTask('Tap a task to open details', {projectId: inbox.id, tags:['tips']}),
+        mkTask('Set a due date →', {projectId: inbox.id, due: todayISO(1), tags:['today']}),
+      ]
+    };
+  }
+
+  function mkProject(name, color){ return { id: uid(), name, color }; }
+
+  function mkTask(title, opts={}){
+    return { id: uid(), title, notes: opts.notes || '', createdAt: new Date().toISOString(), updatedAt: new Date().toISOString(), due: opts.due || '', projectId: opts.projectId || state?.projects?.[0]?.id, tags: opts.tags || [], priority: opts.priority || 'med', completed: false, subtasks: [], repeat: opts.repeat || 'none', snoozeUntil: '', order: Date.now() };
+  }
+
+  function load(){ try { return JSON.parse(localStorage.getItem(DB_KEY)); } catch { return null; } }
+  function save(){ localStorage.setItem(DB_KEY, JSON.stringify(state)); }
+  function applyTheme(t){ document.body.classList.remove(...Array.from(document.body.classList).filter(c=>c.startsWith('theme-'))); document.body.classList.add(t); state.settings.theme = t; save(); $('#themeSelect').value = t; }
+
+  let undoStack = null;
+  function pushToast(msg, actionLabel=null, actionHandler=null){
+    const el = $('#toast'); $('#toastMsg').textContent = msg; const undo = $('#undoBtn');
+    if(actionLabel && actionHandler){ undo.textContent = actionLabel; undo.style.display='inline-block'; undo.onclick = ()=>{ actionHandler(); el.style.display='none'; }; }
+    else { undo.style.display='none'; undo.onclick=null; }
+    el.style.display = 'flex'; clearTimeout(pushToast._t); pushToast._t = setTimeout(()=> el.style.display='none', 2200);
+  }
+  function uid(){ return Math.random().toString(36).slice(2,10); }
+  function todayISO(addDays=0){ const d = new Date(); d.setDate(d.getDate()+addDays); d.setHours(0,0,0,0); return d.toISOString().slice(0,10); }
+
+  function newProjectPrompt(){ const name = prompt('Project name'); if(!name) return; const color = prompt('Hex color (e.g. #34d399)') || '#9ca3af'; const p = mkProject(name, color); state.projects.push(p); save(); refreshProjectSelect(); renderProjects(); pushToast('Project added'); }
+
+  function quickAdd(){ const title = $('#quickTitle').value.trim(); if(!title) return; const t = mkTask(title, { due: $('#addDue').value, priority: $('#addPriority').value, projectId: $('#addProject').value, tags: $('#addTags').value.split(',').map(s=>s.trim()).filter(Boolean), repeat: $('#addRepeat').value }); state.tasks.unshift(t); save(); $('#quickTitle').value=''; $('#addTags').value=''; $('#addDue').value=''; render(); pushToast('Task added'); }
+
+  function renderProjects(){ projectsEl.innerHTML = ''; state.projects.forEach(p => { const count = state.tasks.filter(t => t.projectId===p.id && !t.completed).length; const el = document.createElement('div'); el.className='project'; el.dataset.id=p.id; el.innerHTML = `<div class="dot" style="background:${p.color}"></div><div class="name">${esc(p.name)}</div><small>• ${count}</small><div style="margin-left:auto; display:flex; gap:6px;"><button class="btn ghost" data-act="edit">Edit</button><button class="btn ghost" data-act="del">Delete</button></div>`; el.addEventListener('click', (e)=>{ if(e.target.dataset.act==='edit'){ e.stopPropagation(); const newName = prompt('Rename project', p.name); if (!newName) return; p.name = newName; save(); renderProjects(); render(); } else if(e.target.dataset.act==='del'){ e.stopPropagation(); if(p.id===state.projects[0].id){ alert('Cannot delete Inbox'); return; } if(confirm('Delete project and move its tasks to Inbox?')){ const inboxId=state.projects[0].id; state.tasks.forEach(t=>{ if(t.projectId===p.id) t.projectId=inboxId; }); state.projects = state.projects.filter(x=>x.id!==p.id); save(); refreshProjectSelect(); renderProjects(); render(); } } else { $$('.project').forEach(x=>x.classList.remove('active')); el.classList.add('active'); filter = 'project:'+p.id; $$('.filters .chip[data-filter]').forEach(x=>x.classList.remove('active')); render(); } }); projectsEl.appendChild(el); }); }
+
+  function render(){ refreshProjectSelect(); const q = searchInput.value.trim().toLowerCase(); let list = state.tasks.slice(); const today = todayISO(); if(filter==='inbox'){ list = list.filter(t=> t.projectId === state.projects[0].id && !t.completed); } else if(filter==='today'){ list = list.filter(t=> !t.completed && (t.due===today)); } else if(filter==='upcoming'){ list = list.filter(t=> !t.completed && t.due && t.due>today); } else if(filter==='completed'){ list = list.filter(t=> t.completed); } else if(filter.startsWith('project:')){ const id = filter.split(':')[1]; list = list.filter(t=> t.projectId===id && !t.completed); } if(q){ list = list.filter(t=> (t.title+' '+t.notes+' '+t.tags.join(' ')).toLowerCase().includes(q)); }
+    const prioRank = {crit:3, high:2, med:1, low:0}; list.sort((a,b)=>{ if(sortMode==='due'){ return (a.due||'') < (b.due||'') ? -1 : 1; } else if(sortMode==='priority'){ return prioRank[b.priority]-prioRank[a.priority]; } else if(sortMode==='created'){ return (a.createdAt<b.createdAt)?1:-1; } else { if(a.completed!==b.completed) return a.completed?1:-1; if((a.due||'') !== (b.due||'')) return (a.due||'') < (b.due||'') ? -1 : 1; const pr = prioRank[b.priority]-prioRank[a.priority]; if(pr) return pr; return b.order - a.order; } });
+    tasksEl.innerHTML=''; let completedCount = state.tasks.filter(t=>t.completed).length; let activeCount = state.tasks.length - completedCount; $('#countInfo').textContent = `${activeCount} active • ${completedCount} done`; $('#bulkBar').style.display = selectMode ? '' : 'none'; $('#bulkComplete').onclick = bulkComplete; $('#bulkDelete').onclick = bulkDelete; list.forEach(t=> tasksEl.appendChild(renderTask(t))); }
+
+  function renderTask(t){ const el = document.createElement('div'); el.className = 'task'; el.draggable = true; el.dataset.id = t.id; const overdue = t.due && t.due < todayISO() && !t.completed; const dueLabel = t.due ? (overdue ? 'Overdue ' : '') + t.due : 'No due'; const tags = t.tags.map(tag=>'<span class="tag">#'+esc(tag)+'</span>').join(' '); const prioClass = t.priority; el.innerHTML = `<div class="task-header"><div class="checkbox ${t.completed?'done':''}" data-act="toggle">${t.completed?'✓':''}</div><div class="title" style="flex:1">${esc(t.title)}</div><div class="meta"><span class="pill ${prioClass}" title="Priority">${t.priority}</span><span class="pill" title="Due">${dueLabel}</span><button class="iconbtn" title="Details" data-act="open">⋯</button><button class="iconbtn" title="Delete" data-act="trash">🗑️</button></div></div><div class="task-details"><div class="field"><label>Notes</label><textarea rows="3" data-field="notes">${esc(t.notes)}</textarea></div><div style="display:grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap:8px;"><div class="field"><label>Due</label><input type="date" data-field="due" value="${t.due}"></div><div class="field"><label>Priority</label><select data-field="priority"><option value="low" ${t.priority==='low'?'selected':''}>Low</option><option value="med" ${t.priority==='med'?'selected':''}>Medium</option><option value="high" ${t.priority==='high'?'selected':''}>High</option><option value="crit" ${t.priority==='crit'?'selected':''}>Critical</option></select></div><div class="field"><label>Project</label><select data-field="projectId">${state.projects.map(p=>'<option value="'+p.id+'" '+(t.projectId===p.id?'selected':'')+'>'+esc(p.name)+'</option>').join('')}</select></div><div class="field"><label>Repeat</label><select data-field="repeat"><option value="none" ${t.repeat==='none'?'selected':''}>None</option><option value="daily" ${t.repeat==='daily'?'selected':''}>Daily</option><option value="weekly" ${t.repeat==='weekly'?'selected':''}>Weekly</option><option value="monthly" ${t.repeat==='monthly'?'selected':''}>Monthly</option></select></div></div><div class="field"><label>Tags (comma separated)</label><input data-field="tags" value="${esc(t.tags.join(', '))}"/></div><div style="display:flex; gap:8px; flex-wrap:wrap;"><button class="btn" data-act="snooze">Snooze +1d</button><button class="btn" data-act="dup">Duplicate</button><button class="btn ghost" data-act="del">Delete</button></div><div class="tags">${tags}</div></div>`;
+
+    if(selectMode){ const chk = document.createElement('input'); chk.type = 'checkbox'; chk.style.marginRight='8px'; chk.addEventListener('change', ()=>{ t._selected = chk.checked; }); el.querySelector('.task-header').prepend(chk); }
+
+    el.addEventListener('click', (e)=>{ const act = e.target.dataset.act; if(act==='toggle'){ toggleComplete(t); el.querySelector('.checkbox').classList.toggle('done'); } else if(act==='open'){ el.classList.toggle('open'); } else if(act==='trash'){ deleteTask(t); } });
+
+    $$('.task-details [data-field]', el).forEach(inp => { inp.addEventListener('change', ()=>{ const f = inp.dataset.field; let v = inp.value; if(f==='tags') v = v.split(',').map(s=>s.trim()).filter(Boolean); t[f] = v; t.updatedAt = new Date().toISOString(); save(); render(); }); });
+
+    $$('.task-details [data-act]', el).forEach(btn => { btn.addEventListener('click', ()=>{ const act = btn.dataset.act; if(act==='del'){ deleteTask(t); } else if(act==='snooze'){ t.due = t.due || todayISO(); t.due = addDaysISO(t.due, 1); save(); render(); pushToast('Snoozed +1 day'); } else if(act==='dup'){ const copy = {...t, id:uid(), title: t.title + ' (copy)', createdAt:new Date().toISOString(), updatedAt:new Date().toISOString()}; state.tasks.unshift(copy); save(); render(); } }); });
+
+    el.addEventListener('dragstart', e => { el.classList.add('dragging'); e.dataTransfer.setData('text/plain', t.id); });
+    el.addEventListener('dragend', ()=> el.classList.remove('dragging'));
+    el.addEventListener('dragover', e => { e.preventDefault(); const draggingId = e.dataTransfer.getData('text/plain'); if (!draggingId || draggingId===t.id) return; const draggingTask = state.tasks.find(x=>x.id===draggingId); if (!draggingTask) return; const tmp = draggingTask.order; draggingTask.order = t.order; t.order = tmp; save(); render(); });
+
+    return el;
+  }
+
+  function deleteTask(t){ const idx = state.tasks.findIndex(x=>x.id===t.id); if(idx<0) return; const removed = state.tasks.splice(idx,1)[0]; save(); render(); undoStack = removed; pushToast('Task deleted', 'Undo', ()=>{ if(undoStack){ state.tasks.unshift(undoStack); undoStack=null; save(); render(); } }); }
+
+  function addDaysISO(iso, n){ const d = new Date(iso); d.setDate(d.getDate()+n); return d.toISOString().slice(0,10); }
+
+  function toggleComplete(t){ t.completed = !t.completed; if(t.completed && t.repeat && t.repeat!=='none'){ const next = {...t, id:uid(), completed:false, createdAt:new Date().toISOString(), updatedAt:new Date().toISOString()}; next.title = t.title; if(t.due){ if(t.repeat==='daily') next.due = addDaysISO(t.due, 1); if(t.repeat==='weekly') next.due = addDaysISO(t.due, 7); if(t.repeat==='monthly'){ const d=new Date(t.due); d.setMonth(d.getMonth()+1); next.due = d.toISOString().slice(0,10); } } state.tasks.unshift(next); } t.updatedAt = new Date().toISOString(); save(); render(); }
+
+  function bulkComplete(){ state.tasks.filter(t=>t._selected).forEach(t=>{ t.completed=true; t._selected=false; }); save(); render(); pushToast('Completed selected'); }
+  function bulkDelete(){ state.tasks = state.tasks.filter(t=>!t._selected); save(); render(); pushToast('Deleted selected'); }
+
+  function exportData(){ const blob = new Blob([JSON.stringify(state,null,2)], {type:'application/json'}); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href=url; a.download='udhav_list_export.json'; a.click(); URL.revokeObjectURL(url); }
+  function importData(e){ const file = e.target.files[0]; if(!file) return; const reader = new FileReader(); reader.onload = ()=>{ try{ const data = JSON.parse(reader.result); if(!data.tasks || !data.projects) throw new Error('Invalid file'); localStorage.setItem(DB_KEY, JSON.stringify(data)); location.reload(); }catch(err){ alert('Import failed: ' + err.message); } }; reader.readAsText(file); }
+
+  function esc(s){ return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+
+  // --- PWA: register service worker ---
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('./sw.js').catch(()=>{});
+    });
+  }
+  </script>
+</body>
+</html>
